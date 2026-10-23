@@ -1,0 +1,14 @@
+# Environnement et secrets
+.env
+.env.*
+# Dépendances et builds
+node_modules/
+dist/
+# Système et éditeurs
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+# Logs et archives
+*.log
+*.zip

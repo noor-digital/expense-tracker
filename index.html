@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Expense Tracker – Suivi des dépenses</title>
+<meta name="description" content="Application de suivi des dépenses personnelles, 100 % navigateur.">
+<link rel="stylesheet" href="css/style.css">
+<script>try{var t=JSON.parse(localStorage.getItem("expense-tracker:theme"));if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<header class="top">
+  <h1 class="brand">Expense Tracker</h1>
+  <nav id="nav" aria-label="Navigation principale">
+    <button data-view="dashboard" class="on">Tableau de bord</button>
+    <button data-view="expenses">Dépenses</button>
+    <button data-view="stats">Statistiques</button>
+    <button data-view="data">Données</button>
+  </nav>
+  <div class="actions">
+    <button id="themeBtn" class="ghost" aria-label="Basculer entre mode clair et sombre">◐</button>
+    <button id="addBtn" class="primary">Ajouter une dépense</button>
+  </div>
+</header>
+
+<main>
+  <section id="dashboard" class="view">
+    <div class="cards" id="cards"></div>
+    <div class="panel">
+      <div class="row">
+        <h2>Budget mensuel</h2>
+        <form id="budgetForm" class="inline">
+          <label class="sr" for="budgetInput">Budget mensuel en FCFA</label>
+          <input id="budgetInput" type="number" min="0" step="1000" inputmode="numeric">
+          <button class="ghost">Enregistrer</button>
+        </form>
+      </div>
+      <div class="meter" id="meter" role="progressbar" aria-label="Budget utilisé" aria-valuemin="0" aria-valuemax="100"><i id="meterFill"></i></div>
+      <p id="budgetMsg" class="msg"></p>
+    </div>
+  </section>
+
+  <section id="expenses" class="view" hidden>
+    <form id="filters" class="panel filters" aria-label="Recherche et filtres">
+      <label>Recherche<input id="fQ" type="search" placeholder="Description…"></label>
+      <label>Catégorie<select id="fCat"></select></label>
+      <label>Paiement<select id="fPay"></select></label>
+      <label>Du<input id="fFrom" type="date"></label>
+      <label>Au<input id="fTo" type="date"></label>
+      <label>Tri<select id="fSort">
+        <option value="date-desc">Date : récentes d’abord</option>
+        <option value="date-asc">Date : anciennes d’abord</option>
+        <option value="amount-desc">Montant : décroissant</option>
+        <option value="amount-asc">Montant : croissant</option>
+      </select></label>
+      <button type="button" id="resetBtn" class="ghost">Réinitialiser</button>
+    </form>
+    <p id="count" class="muted"></p>
+    <table class="table">
+      <thead><tr><th>Date</th><th>Description</th><th>Catégorie</th><th>Paiement</th><th class="num">Montant</th><th><span class="sr">Actions</span></th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </section>
+
+  <section id="stats" class="view" hidden>
+    <div class="panel"><h2>Catégorie la plus coûteuse</h2><p id="topCat" class="big"></p></div>
+    <div class="panel"><h2>Répartition par catégorie</h2><div id="chartCat"></div></div>
+    <div class="panel"><h2>Évolution sur 6 mois</h2><div id="chartMonth"></div></div>
+  </section>
+
+  <section id="data" class="view" hidden>
+    <div class="panel">
+      <h2>Vos données</h2>
+      <p class="muted">Tout est stocké dans ce navigateur (localStorage). Rien n’est envoyé sur un serveur.</p>
+      <div class="btns">
+        <button id="exportBtn" class="ghost">Exporter en CSV</button>
+        <button id="importBtn" class="ghost">Importer un CSV</button>
+        <button id="clearBtn" class="danger">Supprimer toutes les données</button>
+        <input id="importFile" type="file" accept=".csv,text/csv" hidden>
+      </div>
+      <p class="muted">Format CSV : description, montant, catégorie, date (AAAA-MM-JJ), paiement, note.</p>
+    </div>
+  </section>
+</main>
+
+<dialog id="formDlg" aria-labelledby="formTitle">
+  <form id="expForm" novalidate>
+    <h2 id="formTitle">Ajouter une dépense</h2>
+    <input type="hidden" id="eId">
+    <label>Description<input id="eDesc" maxlength="80" required><small class="err" data-for="description"></small></label>
+    <div class="two">
+      <label>Montant (FCFA)<input id="eAmount" type="number" min="1" step="1" inputmode="numeric"><small class="err" data-for="amount"></small></label>
+      <label>Date<input id="eDate" type="date"><small class="err" data-for="date"></small></label>
+    </div>
+    <div class="two">
+      <label>Catégorie<select id="eCat"></select></label>
+      <label>Moyen de paiement<select id="ePay"></select></label>
+    </div>
+    <label>Note (facultatif)<textarea id="eNote" rows="2" maxlength="200"></textarea></label>
+    <div class="btns end"><button type="button" class="ghost" data-close>Annuler</button><button class="primary">Enregistrer</button></div>
+  </form>
+</dialog>
+
+<dialog id="confirmDlg" aria-labelledby="confirmMsg">
+  <form method="dialog">
+    <p id="confirmMsg"></p>
+    <div class="btns end"><button value="cancel" class="ghost">Annuler</button><button value="ok" class="danger">Confirmer</button></div>
+  </form>
+</dialog>
+
+<div id="toasts" aria-live="polite"></div>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
