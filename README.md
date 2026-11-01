@@ -66,3 +66,11 @@ En-tête : `description,montant,categorie,date,paiement,note` (le séparateur, v
 - Données stockées localement : pas de synchronisation entre appareils.
 - Montants en FCFA, sans gestion multi-devises.
 - Import CSV simple : pas de détection d'encodage ni de doublons.
+
+
+## À propos de NOOR DIGITAL
+
+Expense Tracker fait partie du portfolio **NOOR DIGITAL** — *La lumière qui structure*.
+
+- **GitHub :** https://github.com/noor-digital
+- **Portfolio :** https://noor-digital.github.io/noor-digital-portfolio/
